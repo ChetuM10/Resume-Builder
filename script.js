@@ -59,106 +59,90 @@ function collectFormData() {
                 firstName: document.getElementById('firstname').value || '',
                 lastName: document.getElementById('lastname').value || '',
                 fullName: (document.getElementById('firstname').value + ' ' + document.getElementById('lastname').value).trim() || 'Your Name',
-                designation: document.getElementById('designation').value || '',
                 location: document.getElementById('address').value || '',
                 email: document.getElementById('email').value || '',
                 phone: document.getElementById('phone').value || '',
-                summary: document.getElementById('summary').value || '',
-                profileImage: null // Will be set later if available
+                github: document.getElementById('github').value || '',
+                summary: document.getElementById('summary').value || ''
             },
-            achievements: [],
+            skills: [],
+            projects: [],
             experience: [],
             education: [],
-            projects: [],
-            skills: []
+            achievements: []
         };
 
-        // Handle profile image if uploaded
-        const profileImageInput = document.getElementById('profileImage');
-        if (profileImageInput && profileImageInput.files && profileImageInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                formData.personal.profileImage = e.target.result;
-                continueProcessing();
-            };
-            reader.readAsDataURL(profileImageInput.files[0]);
-        } else {
-            continueProcessing();
-        }
+        // Collect skills
+        document.querySelectorAll('.skill-item').forEach(item => {
+            const skill = item.querySelector('input[name="skill[]"]')?.value || '';
+            if (skill) {
+                formData.skills.push(skill);
+            }
+        });
 
-        function continueProcessing() {
-            // Collect achievements
-            document.querySelectorAll('.achievement-item').forEach(item => {
-                const title = item.querySelector('input[name="achieve_title"]')?.value || '';
-                const description = item.querySelector('input[name="achieve_description"]')?.value || '';
-                if (title || description) {
-                    formData.achievements.push({ title, description });
-                }
-            });
+        // Collect projects
+        document.querySelectorAll('.project-item').forEach(item => {
+            const title = item.querySelector('input[name="proj_title[]"]')?.value || '';
+            const link = item.querySelector('input[name="proj_link[]"]')?.value || '';
+            const description = item.querySelector('input[name="proj_description[]"]')?.value || '';
 
-            // Collect experience
-            document.querySelectorAll('.experience-item').forEach(item => {
-                const title = item.querySelector('input[name="exp_title[]"]')?.value || '';
-                const organization = item.querySelector('input[name="exp_organization[]"]')?.value || '';
-                const location = item.querySelector('input[name="exp_location[]"]')?.value || '';
-                const startDate = item.querySelector('input[name="exp_start_date[]"]')?.value || '';
-                const endDate = item.querySelector('input[name="exp_end_date[]"]')?.value || '';
-                const description = item.querySelector('input[name="exp_description[]"]')?.value || '';
+            if (title || description) {
+                formData.projects.push({ title, link, description });
+            }
+        });
 
-                if (title || organization) {
-                    formData.experience.push({
-                        title,
-                        organization,
-                        location,
-                        startDate: formatDate(startDate),
-                        endDate: formatDate(endDate),
-                        description
-                    });
-                }
-            });
+        // Collect experience
+        document.querySelectorAll('.experience-item').forEach(item => {
+            const title = item.querySelector('input[name="exp_title[]"]')?.value || '';
+            const organization = item.querySelector('input[name="exp_organization[]"]')?.value || '';
+            const location = item.querySelector('input[name="exp_location[]"]')?.value || '';
+            const startDate = item.querySelector('input[name="exp_start_date[]"]')?.value || '';
+            const endDate = item.querySelector('input[name="exp_end_date[]"]')?.value || '';
+            const description = item.querySelector('input[name="exp_description[]"]')?.value || '';
 
-            // Collect education
-            document.querySelectorAll('.education-item').forEach(item => {
-                const school = item.querySelector('input[name="edu_school[]"]')?.value || '';
-                const degree = item.querySelector('input[name="edu_degree[]"]')?.value || '';
-                const city = item.querySelector('input[name="edu_city[]"]')?.value || '';
-                const startDate = item.querySelector('input[name="edu_start_date[]"]')?.value || '';
-                const endDate = item.querySelector('input[name="edu_graduation_date[]"]')?.value || '';
-                const description = item.querySelector('input[name="edu_description[]"]')?.value || '';
+            if (title || organization) {
+                formData.experience.push({
+                    title,
+                    organization,
+                    location,
+                    startDate: formatDate(startDate),
+                    endDate: formatDate(endDate),
+                    description
+                });
+            }
+        });
 
-                if (school || degree) {
-                    formData.education.push({
-                        school,
-                        degree,
-                        city,
-                        startDate: formatDate(startDate),
-                        endDate: formatDate(endDate),
-                        description
-                    });
-                }
-            });
+        // Collect education
+        document.querySelectorAll('.education-item').forEach(item => {
+            const school = item.querySelector('input[name="edu_school[]"]')?.value || '';
+            const degree = item.querySelector('input[name="edu_degree[]"]')?.value || '';
+            const city = item.querySelector('input[name="edu_city[]"]')?.value || '';
+            const startDate = item.querySelector('input[name="edu_start_date[]"]')?.value || '';
+            const endDate = item.querySelector('input[name="edu_graduation_date[]"]')?.value || '';
+            const description = item.querySelector('input[name="edu_description[]"]')?.value || '';
 
-            // Collect projects
-            document.querySelectorAll('.project-item').forEach(item => {
-                const title = item.querySelector('input[name="proj_title[]"]')?.value || '';
-                const link = item.querySelector('input[name="proj_link[]"]')?.value || '';
-                const description = item.querySelector('input[name="proj_description[]"]')?.value || '';
+            if (school || degree) {
+                formData.education.push({
+                    school,
+                    degree,
+                    city,
+                    startDate: formatDate(startDate),
+                    endDate: formatDate(endDate),
+                    description
+                });
+            }
+        });
 
-                if (title || description) {
-                    formData.projects.push({ title, link, description });
-                }
-            });
+        // Collect achievements
+        document.querySelectorAll('.achievement-item').forEach(item => {
+            const title = item.querySelector('input[name="achieve_title"]')?.value || '';
+            const description = item.querySelector('input[name="achieve_description"]')?.value || '';
+            if (title || description) {
+                formData.achievements.push({ title, description });
+            }
+        });
 
-            // Collect skills
-            document.querySelectorAll('.skill-item').forEach(item => {
-                const skill = item.querySelector('input[name="skill[]"]')?.value || '';
-                if (skill) {
-                    formData.skills.push(skill);
-                }
-            });
-
-            resolve(formData);
-        }
+        resolve(formData);
     });
 }
 
@@ -180,21 +164,43 @@ function generateResumeHTML(data) {
         <div class="resume-header">
             <div>
                 <h1>${data.personal.fullName || 'Your Name'}</h1>
-                <p>${data.personal.designation || 'Your Designation'}</p>
                 <p>${data.personal.location || 'Your Location'}</p>
                 <div class="contact-info">
                     ${data.personal.email ? `<div class="contact-item">${data.personal.email}</div>` : ''}
                     ${data.personal.phone ? `<div class="contact-item">${data.personal.phone}</div>` : ''}
+                    ${data.personal.github ? `<div class="contact-item"><a href="${data.personal.github}" target="_blank">${data.personal.github}</a></div>` : ''}
                 </div>
             </div>
-            ${data.personal.profileImage ? `<img src="${data.personal.profileImage}" class="profile-image" crossorigin="anonymous">` : ''}
         </div>
 
-        <!-- Summary -->
+        <!-- Professional Objective -->
         ${data.personal.summary ? `
         <div class="resume-section">
             <h2>Professional Objective</h2>
             <p>${data.personal.summary}</p>
+        </div>
+        ` : ''}
+
+        <!-- Technical Skills -->
+        ${data.skills.length > 0 ? `
+        <div class="resume-section">
+            <h2>Technical Skills</h2>
+            <div class="skills-container">
+                ${data.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+            </div>
+        </div>
+        ` : ''}
+
+        <!-- Projects -->
+        ${data.projects.length > 0 ? `
+        <div class="resume-section">
+            <h2>Projects</h2>
+            ${data.projects.map(proj => `
+                <div class="resume-item">
+                    <h3>${proj.title || 'Project Title'} ${proj.link ? `<a href="${proj.link}" class="project-link" target="_blank">View Project</a>` : ''}</h3>
+                    <p>${proj.description || ''}</p>
+                </div>
+            `).join('')}
         </div>
         ` : ''}
 
@@ -226,19 +232,6 @@ function generateResumeHTML(data) {
         </div>
         ` : ''}
 
-        <!-- Projects -->
-        ${data.projects.length > 0 ? `
-        <div class="resume-section">
-            <h2>Projects</h2>
-            ${data.projects.map(proj => `
-                <div class="resume-item">
-                    <h3>${proj.title || 'Project Title'} ${proj.link ? `<a href="${proj.link}" class="project-link">${proj.link}</a>` : ''}</h3>
-                    <p>${proj.description || ''}</p>
-                </div>
-            `).join('')}
-        </div>
-        ` : ''}
-
         <!-- Achievements -->
         ${data.achievements.length > 0 ? `
         <div class="resume-section">
@@ -248,16 +241,6 @@ function generateResumeHTML(data) {
                     <li><strong>${achieve.title || ''}</strong> - ${achieve.description || ''}</li>
                 `).join('')}
             </ul>
-        </div>
-        ` : ''}
-
-        <!-- Skills -->
-        ${data.skills.length > 0 ? `
-        <div class="resume-section">
-            <h2>Skills</h2>
-            <div class="skills-container">
-                ${data.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
-            </div>
         </div>
         ` : ''}
     </div>
@@ -274,116 +257,81 @@ function generatePDF(formData) {
         tempContainer.innerHTML = generateResumeHTML(formData);
         document.body.appendChild(tempContainer);
 
-        // Wait for images to load before generating PDF
-        const images = tempContainer.querySelectorAll('img');
-        let imagesLoaded = 0;
+        // Use html2canvas to capture the resume as an image
+        html2canvas(tempContainer, {
+            scale: 2, // Higher scale for better quality
+            useCORS: true, // Enable CORS for images
+            allowTaint: true, // Allow tainted canvas
+            logging: false // Disable logging
+        }).then(canvas => {
+            // Remove the temporary container
+            document.body.removeChild(tempContainer);
 
-        if (images.length === 0) {
-            // No images, proceed with PDF generation
-            proceedWithPDFGeneration();
-        } else {
-            // Wait for all images to load
-            images.forEach(img => {
-                if (img.complete) {
-                    imagesLoaded++;
-                    if (imagesLoaded === images.length) {
-                        proceedWithPDFGeneration();
-                    }
-                } else {
-                    img.onload = function () {
-                        imagesLoaded++;
-                        if (imagesLoaded === images.length) {
-                            proceedWithPDFGeneration();
-                        }
-                    };
-                    img.onerror = function () {
-                        console.error('Image failed to load');
-                        imagesLoaded++;
-                        if (imagesLoaded === images.length) {
-                            proceedWithPDFGeneration();
-                        }
-                    };
-                }
+            // Initialize jsPDF
+            const pdf = new jspdf.jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
             });
-        }
 
-        function proceedWithPDFGeneration() {
-            // Use html2canvas to capture the resume as an image
-            html2canvas(tempContainer, {
-                scale: 2, // Higher scale for better quality
-                useCORS: true, // Enable CORS for images
-                allowTaint: true, // Allow tainted canvas
-                logging: false // Disable logging
-            }).then(canvas => {
-                // Remove the temporary container
-                document.body.removeChild(tempContainer);
+            // Canvas dimensions
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
 
-                // Initialize jsPDF
-                const pdf = new jspdf.jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
+            // Calculate the scaling factor to fit the canvas to the PDF page
+            const ratio = Math.min(pageWidth / canvasWidth, pageHeight / canvasHeight);
+            const imgWidth = canvasWidth * ratio;
+            const imgHeight = canvasHeight * ratio;
 
-                // Canvas dimensions
-                const imgData = canvas.toDataURL('image/jpeg', 1.0);
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const pageHeight = pdf.internal.pageSize.getHeight();
-                const canvasWidth = canvas.width;
-                const canvasHeight = canvas.height;
+            // Center the image in the page
+            const x = (pageWidth - imgWidth) / 2;
+            const y = 10; // Small margin from the top
 
-                // Calculate the scaling factor to fit the canvas to the PDF page
-                const ratio = Math.min(pageWidth / canvasWidth, pageHeight / canvasHeight);
-                const imgWidth = canvasWidth * ratio;
-                const imgHeight = canvasHeight * ratio;
+            // Add the image to the PDF
+            pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
 
-                // Center the image in the page
-                const x = (pageWidth - imgWidth) / 2;
-                const y = 10; // Small margin from the top
+            // If the content is too long for one page, handle pagination
+            if (imgHeight > pageHeight - 20) { // 20mm margin
+                let remainingHeight = imgHeight;
+                let sourceY = 0;
+                const pageHeightInPx = (pageHeight - 20) / ratio;
 
-                // Add the image to the PDF
-                pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+                // Remove the first page that was added by default
+                pdf.deletePage(1);
 
-                // If the content is too long for one page, handle pagination
-                if (imgHeight > pageHeight - 20) { // 20mm margin
-                    let remainingHeight = imgHeight;
-                    let sourceY = 0;
-                    const pageHeightInPx = (pageHeight - 20) / ratio;
+                // Add pages as needed
+                let pageCount = 0;
+                while (remainingHeight > 0 && pageCount < 10) { // Prevent infinite loop with a reasonable limit
+                    pageCount++;
+                    pdf.addPage();
+                    const chunkHeight = Math.min(pageHeightInPx, remainingHeight / ratio);
 
-                    // Remove the first page that was added by default
-                    pdf.deletePage(1);
+                    pdf.addImage(
+                        imgData,
+                        'JPEG',
+                        x,
+                        y,
+                        imgWidth,
+                        imgHeight,
+                        null,
+                        null,
+                        null,
+                        sourceY / canvasHeight
+                    );
 
-                    // Add pages as needed
-                    let pageCount = 0;
-                    while (remainingHeight > 0 && pageCount < 10) { // Prevent infinite loop with a reasonable limit
-                        pageCount++;
-                        pdf.addPage();
-                        const chunkHeight = Math.min(pageHeightInPx, remainingHeight / ratio);
-
-                        pdf.addImage(
-                            imgData,
-                            'JPEG',
-                            x,
-                            y,
-                            imgWidth,
-                            imgHeight,
-                            null,
-                            null,
-                            null,
-                            sourceY / canvasHeight
-                        );
-
-                        sourceY += chunkHeight;
-                        remainingHeight -= chunkHeight * ratio;
-                    }
+                    sourceY += chunkHeight;
+                    remainingHeight -= chunkHeight * ratio;
                 }
+            }
 
-                resolve(pdf);
-            }).catch(err => {
-                console.error('Error generating PDF:', err);
-                reject(err);
-            });
-        }
+            resolve(pdf);
+        }).catch(err => {
+            console.error('Error generating PDF:', err);
+            reject(err);
+        });
     });
 }
 
@@ -401,7 +349,7 @@ function downloadResume() {
     submitBtn.innerHTML = 'Generating PDF...';
     submitBtn.disabled = true;
 
-    // Collect form data with proper image handling
+    // Collect form data
     collectFormData()
         .then(formData => {
             console.log('Form data collected successfully');
