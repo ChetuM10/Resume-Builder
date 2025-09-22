@@ -76,31 +76,22 @@
           </div>
 
           <div class="row g-3 mt-1">
-            <div class="col-md-4">
-              <label for="profileImage" class="form-label">Profile Image</label>
-              <input
-                type="file"
-                class="form-control"
-                id="profileImage"
-                accept="image/*"
-              />
-            </div>
-            <div class="col-md-4">
-              <label for="designation" class="form-label">Designation</label>
-              <input
-                type="text"
-                class="form-control"
-                id="designation"
-                placeholder="e.g. SDE 2"
-              />
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
               <label for="address" class="form-label">Location</label>
               <input
                 type="text"
                 class="form-control"
                 id="address"
                 placeholder="e.g. Bangalore, India"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="github" class="form-label">GitHub Profile</label>
+              <input
+                type="url"
+                class="form-control"
+                id="github"
+                placeholder="https://github.com/username"
               />
             </div>
           </div>
@@ -138,28 +129,19 @@
           </div>
         </div>
 
-        <!-- Achievements -->
+        <!-- Technical Skills -->
         <div class="form-section">
-          <h3 class="section-title">Achievements</h3>
-          <div id="achievementsContainer">
-            <div class="achievement-item">
-              <div class="row mb-2">
-                <div class="col-md-5">
-                  <label class="form-label">Title</label>
+          <h3 class="section-title">Technical Skills</h3>
+          <div id="skillsContainer">
+            <div class="skill-item">
+              <div class="row g-3 mb-2">
+                <div class="col-md-11">
+                  <label class="form-label">Skill</label>
                   <input
                     type="text"
                     class="form-control"
-                    name="achieve_title"
-                    placeholder="Achievement title"
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Description</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="achieve_description"
-                    placeholder="Brief description"
+                    name="skill[]"
+                    placeholder="e.g. JavaScript, Project Management"
                   />
                 </div>
                 <div class="col-md-1 d-flex align-items-end">
@@ -174,7 +156,55 @@
               </div>
             </div>
           </div>
-          <button type="button" class="add-btn" onclick="addAchievement()">
+          <button type="button" class="add-btn" onclick="addSkill()">+</button>
+        </div>
+
+        <!-- Projects -->
+        <div class="form-section">
+          <h3 class="section-title">Projects</h3>
+          <div id="projectsContainer">
+            <div class="project-item">
+              <div class="row g-3 mb-2">
+                <div class="col-md-4">
+                  <label class="form-label">Project Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="proj_title[]"
+                    placeholder="Project title"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Project Link</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="proj_link[]"
+                    placeholder="Website URL / Github URL"
+                  />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="proj_description[]"
+                    placeholder="Project details"
+                  />
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeItem(this)"
+                  >
+                    -
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="add-btn" onclick="addProject()">
             +
           </button>
         </div>
@@ -333,37 +363,28 @@
           </button>
         </div>
 
-        <!-- Projects -->
+        <!-- Achievements -->
         <div class="form-section">
-          <h3 class="section-title">Projects</h3>
-          <div id="projectsContainer">
-            <div class="project-item">
-              <div class="row g-3 mb-2">
-                <div class="col-md-4">
-                  <label class="form-label">Project Name</label>
+          <h3 class="section-title">Achievements</h3>
+          <div id="achievementsContainer">
+            <div class="achievement-item">
+              <div class="row mb-2">
+                <div class="col-md-5">
+                  <label class="form-label">Title</label>
                   <input
                     type="text"
                     class="form-control"
-                    name="proj_title[]"
-                    placeholder="Project title"
+                    name="achieve_title"
+                    placeholder="Achievement title"
                   />
                 </div>
-                <div class="col-md-4">
-                  <label class="form-label">Project Link</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="proj_link[]"
-                    placeholder="Website URL / Github URL"
-                  />
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                   <label class="form-label">Description</label>
                   <input
                     type="text"
                     class="form-control"
-                    name="proj_description[]"
-                    placeholder="Project details"
+                    name="achieve_description"
+                    placeholder="Brief description"
                   />
                 </div>
                 <div class="col-md-1 d-flex align-items-end">
@@ -378,39 +399,9 @@
               </div>
             </div>
           </div>
-          <button type="button" class="add-btn" onclick="addProject()">
+          <button type="button" class="add-btn" onclick="addAchievement()">
             +
           </button>
-        </div>
-
-        <!-- Skills -->
-        <div class="form-section">
-          <h3 class="section-title">Skills</h3>
-          <div id="skillsContainer">
-            <div class="skill-item">
-              <div class="row g-3 mb-2">
-                <div class="col-md-11">
-                  <label class="form-label">Skill</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="skill[]"
-                    placeholder="e.g. JavaScript, Project Management"
-                  />
-                </div>
-                <div class="col-md-1 d-flex align-items-end">
-                  <button
-                    type="button"
-                    class="remove-btn"
-                    onclick="removeItem(this)"
-                  >
-                    -
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button type="button" class="add-btn" onclick="addSkill()">+</button>
         </div>
 
         <!-- Submit Button -->
